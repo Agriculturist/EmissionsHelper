@@ -27,7 +27,7 @@ timeFloor <- function(timeValue, timeIntervalValue = 15, timeIntervalUnits = "mi
                                   "h" = 3600)
   
   
-  return(as.POSIXct(floor(as.numeric(timeValue) / 
+  return(as.POSIXct(floor(as.numeric(as.POSIXct(timeValue)) / 
                             (timeIntervalValue * timeIntervalInSeconds)) * 
                       (timeIntervalValue * timeIntervalInSeconds), 
                     origin='1970-01-01'))
