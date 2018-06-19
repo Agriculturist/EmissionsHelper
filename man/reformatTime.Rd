@@ -4,25 +4,42 @@
 \alias{reformatTime}
 \title{reformatTime}
 \usage{
-reformatTime(cdate, ctime = NULL, format = "\%m/\%d/\%Y \%H:\%M:\%S",
-  tz = "Etc/GMT+6")
+reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
+  dateFormat = "American", tz = "Etc/GMT+6", dateTimeDelimiter = "//s")
 }
 \arguments{
-\item{cdate}{the date an event occured}
+\item{dateToReformat}{the date and or time an event occured}
 
-\item{ctime}{the time of an event}
-
-\item{format}{format string to output results}
+\item{timeIfSeparateFromDate}{the time of an event as a character array}
 
 \item{tz}{time zone to use}
+
+\item{format}{format string to output results}
 }
 \description{
-This function reformats time so it is always in a consistant format.
+This function is a wrapper for the as.POSIXct function. This function is 
+designed require less effort.
 }
 \details{
-This function is useful for importing date from a text file
+The format parameter can be identical to the as.POSIXct function parameter
+or it can be simplified to simply "American", "British", or "International".
+
+The function identifies the format from knowledge of the order.
+
+The user identifies which format order.  This code will issue a warning 
+if an obvious issue occurs with the format.  If the dataset is large
+getting the format is critical as testing is limited to the first 1000 datapoints. 
+  
+format = "American"      ... date order is (1) month (2) day (3) year
+format = "British"       ... date order is (1) day (2) month (3) year
+format = "International" ... date order is (1) year (2) month (3) day
+
+The time of day may not be part of the character string included with the
+date.  If it is not then the timeIfSeparateFromDate paramter can include 
+a text string with the time.
 }
 \examples{
-
+ 
+   reformatTime()
 }
 \keyword{time}
