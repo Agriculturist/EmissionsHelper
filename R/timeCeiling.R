@@ -27,6 +27,7 @@ timeCeiling <- function(timeValue, timeIntervalValue = 15, timeIntervalUnits = "
                                   "h" = 3600)
   
   
+  if(~is.null(timeValue)){
   return(
     as.POSIXct(
       floor(as.numeric(as.POSIXct(timeValue)) / 
@@ -34,5 +35,9 @@ timeCeiling <- function(timeValue, timeIntervalValue = 15, timeIntervalUnits = "
         (timeIntervalValue * timeIntervalInSeconds) 
       + timeIntervalValue * timeIntervalInSeconds, 
       origin='1970-01-01'))
+  }else{
+    warning("Check parameters in timeCeiling function ... timeValue is NULL")
+  }
+  
   
 }
