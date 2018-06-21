@@ -16,5 +16,5 @@
 #' 
 
 calculateSonicTemperature <- function(speedOfSound, GammaConstant = 1.4, Rd = 287.04){
-  return(speedOfSound^2 / (GammaConstant * R_d)  - 273.15)
+  return(speedOfSound^2 / (GammaConstant * Rd)  - 273.15)
 }
