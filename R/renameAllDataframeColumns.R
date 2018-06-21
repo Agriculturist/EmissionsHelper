@@ -27,7 +27,7 @@ renameAllDataframeColumns <- function(dataframe, newColumnNames){
   if (ncol(dataframe) == length(newColumnNames)){
     names(dataframe) <- newColumnNames 
   }else{
-    warning(paste0("The number of columns in the dataframe is ",  ncol(oldColumnNams), 
+    warning(paste0("The number of columns in the dataframe is ",  ncol(dataframe), 
                    " and the number of elements in newColumnNames is ", 
                    length(newColumnNames)))
   }
