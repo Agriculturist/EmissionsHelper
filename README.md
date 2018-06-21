@@ -1,7 +1,12 @@
 # EmissionsHelper
 An R package to assist with Emissions Modeling Work
 
-This is a collection of simple functions devised for doing work with wind modeling.
+This is a collection of support functions for processing wind models.  The primary purpose of this package is to simplify data wrangling portion associated with wind models.  
 
-These functions are intended to be simple R functions to support more complex emissions software. 
+## Installing file
 
+Instructions for installing devtools can be found at https://www.r-project.org/nosvn/pandoc/devtools.html.
+
+library(devtools)
+install_github("agriculturist/EmissionsHelper")
+library(EmissionsHelper)
