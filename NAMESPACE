@@ -2,7 +2,7 @@
 
 export(calculateSonicTemperature)
 export(reformatTime)
-export(removeDataframeColumns)
+export(renameAllDataframeColumns)
 export(renameDataframeColumn)
 export(timeCeiling)
 export(timeFloor)
