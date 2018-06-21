@@ -10,9 +10,13 @@
 #' 
 #' The second parameter is the column names to change the header.
 #'
+#' If truncate columns is true then extra columns are removed.  This is useful
+#' if a header does not import properly.
 #'
 #' @param dataframe the dataframe to edit
 #' @param newColumnNames the new column names 
+#' @param truncateColumns if TRUE this function removes extra columns not in the column names
+#' @param truncateStartColumn starting column number truncation starts
 #' @return same dataframe except with columns renamed
 #' @keywords rename dataframe column
 #' @examples
@@ -22,14 +26,28 @@
 #' 
 #' @export
 
-renameAllDataframeColumns <- function(dataframe, newColumnNames){
+renameAllDataframeColumns <- function(dataframe, newColumnNames, 
+                                      truncateColumns = FALSE,
+                                      truncateStartColumn = 1){
   
   if (ncol(dataframe) == length(newColumnNames)){
     names(dataframe) <- newColumnNames 
   }else{
-    warning(paste0("The number of columns in the dataframe is ",  ncol(dataframe), 
-                   " and the number of elements in newColumnNames is ", 
-                   length(newColumnNames)))
+    if (truncateColumns){
+      if (ncol(dataframe) > length(newColumnNames)){
+        dataframe <- dataframe[,truncateStartColumn:length(newColumnNames)]  
+        names(dataframe) <- newColumnNames 
+      }else{
+        warning(paste0("The number of columns in the dataframe is ",  ncol(dataframe), 
+                       " and the number of elements in newColumnNames is ", 
+                       length(newColumnNames)), "\n too many column names.")        
+      }
+    }else{
+      warning(paste0("No renaming!\n",
+                     "The number of columns in the dataframe is ",  ncol(dataframe), 
+                     " and the number of elements in newColumnNames is ", 
+                     length(newColumnNames)))      
+    }
   }
   
   return(dataframe)
