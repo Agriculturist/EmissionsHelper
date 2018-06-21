@@ -37,6 +37,9 @@ format = "International" ... date order is (1) year (2) month (3) day
 The time of day may not be part of the character string included with the
 date.  If it is not then the timeIfSeparateFromDate paramter can include 
 a text string with the time.
+
+This function does not work if the data is already converted to a 
+POSIXct time format.
 }
 \examples{
  
