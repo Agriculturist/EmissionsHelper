@@ -11,9 +11,10 @@
 #' @examples
 #' 
 #' df <- data.frame(Column1 = 1, Column2 = 2)
-#' renameDataframeColumn(df, 'Column1', 'ColumnX')
-#' renameDateframeColumn(df, 2, 'ColumnY')
+#' df <- renameDataframeColumn(df, 'Column1', 'ColumnX')
+#' df <- renameDateframeColumn(df, 2, 'ColumnY')
 #'
+#' 
 #' @export
 
 renameDataframeColumn <- function(dataframe, oldColumnName, newColumnName){
