@@ -5,7 +5,7 @@
 \title{reformatTime}
 \usage{
 reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
-  dateFormat = "American", tz = "Etc/GMT+6", dateTimeDelimiter = "//s")
+  dateFormat = "American", tz = "Etc/GMT+6", dateTimeDelimiter = "\\\\s")
 }
 \arguments{
 \item{dateToReformat}{the date and or time an event occured}
