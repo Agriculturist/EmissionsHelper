@@ -37,7 +37,9 @@ if a header does not import properly.
 \examples{
 
 df <- data.frame(Column1 = 1, Column2 = 2)
-renameAllDataframeColumns(df, c('ColumnA', 'ColumnB'))
+df <- renameAllDataframeColumns(df, c('ColumnA', 'ColumnB'))
+
+
 
 }
 \keyword{column}
