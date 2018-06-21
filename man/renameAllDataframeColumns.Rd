@@ -4,12 +4,17 @@
 \alias{renameAllDataframeColumns}
 \title{renameAllDataframeColumns}
 \usage{
-renameAllDataframeColumns(dataframe, newColumnNames)
+renameAllDataframeColumns(dataframe, newColumnNames, truncateColumns = FALSE,
+  truncateStartColumn = 1)
 }
 \arguments{
 \item{dataframe}{the dataframe to edit}
 
 \item{newColumnNames}{the new column names}
+
+\item{truncateColumns}{if TRUE this function removes extra columns not in the column names}
+
+\item{truncateStartColumn}{starting column number truncation starts}
 }
 \value{
 same dataframe except with columns renamed
@@ -25,6 +30,9 @@ this function can be used to change the names of all of the columns.
 The first parameter is the dataframe
 
 The second parameter is the column names to change the header.
+
+If truncate columns is true then extra columns are removed.  This is useful
+if a header does not import properly.
 }
 \examples{
 
