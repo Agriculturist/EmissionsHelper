@@ -5,7 +5,7 @@
 \title{reformatTime}
 \usage{
 reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
-  dateFormat = "american", tz = "Etc/GMT+6", ...)
+  dateFormat = NULL, tz = "Etc/GMT+6", ...)
 }
 \arguments{
 \item{dateToReformat}{the date and or time an event occured}
@@ -14,7 +14,7 @@ reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
 
 \item{tz}{time zone to use}
 
-\item{format}{format string to output results}
+\item{dateformat}{either ("american", "british", "international") or the strptime format parameter.}
 }
 \description{
 This function is a wrapper for the as.POSIXct function. This function is 
@@ -28,11 +28,18 @@ The function identifies the format from knowledge of the order.
 
 The user identifies which format order.  This code will issue a warning 
 if an obvious issue occurs with the format.  If the dataset is large
-getting the format is critical as testing is limited to the first 1000 datapoints. 
+getting the format is critical as testing is limited to the first 100 datapoints.
+
+testChararacterDate parameters may be entered into the function
+
+If dateformat is blank the system will guess at the date format.
   
-format = "american"      ... date order is (1) mm (2) day (3) year
-format = "british"       ... date order is (1) day (2) mm (3) year
-format = "international" ... date order is (1) year (2) mm (3) day
+Because the American and British styles can be confused it may be necissary
+to specify the format.
+
+dateformat = "American"      ... date order is (1) mm (2) day (3) year
+dateformat = "British"       ... date order is (1) day (2) mm (3) year
+dateformat = "International" ... date order is (1) year (2) mm (3) day
 
 The time of day may not be part of the character string included with the
 date.  If it is not then the timeIfSeparateFromDate paramter can include 
@@ -43,6 +50,15 @@ POSIXct time format.
 }
 \examples{
  
-   reformatTime()
+   reformatTime("1/31/2012T00:00:00")
+   
+   reformatTime("2018-01-05 13:45:01")
+   
+   # This will generate an error because it could be either 
+   #     American or British format
+   reformatTime("01-01-2010 12:00:00")
+   
+   reformatTime("01-01-2010 12:00:00", dateFormat = "American")
+   
 }
 \keyword{time}
