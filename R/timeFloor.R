@@ -26,7 +26,7 @@ timeFloor <- function(timeValue, timeIntervalValue = 15, timeIntervalUnits = "mi
                                   "hr" = 3600,
                                   "h" = 3600)
   
-  if(~is.null(timeValue)){
+  if(!is.null(timeValue)){
     return(as.POSIXct(floor(as.numeric(as.POSIXct(timeValue)) / 
                               (timeIntervalValue * timeIntervalInSeconds)) * 
                         (timeIntervalValue * timeIntervalInSeconds), 
@@ -34,6 +34,5 @@ timeFloor <- function(timeValue, timeIntervalValue = 15, timeIntervalUnits = "mi
   }else{
     warning("Check parameters in timeFloor function ... timeValue is NULL")
   }
-  
   
 }
