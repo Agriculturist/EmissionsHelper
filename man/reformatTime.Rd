@@ -5,7 +5,7 @@
 \title{reformatTime}
 \usage{
 reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
-  dateFormat = "American", tz = "Etc/GMT+6", dateTimeDelimiter = "\\\\s")
+  dateFormat = "american", tz = "Etc/GMT+6", ...)
 }
 \arguments{
 \item{dateToReformat}{the date and or time an event occured}
@@ -22,7 +22,7 @@ designed require less effort.
 }
 \details{
 The format parameter can be identical to the as.POSIXct function parameter
-or it can be simplified to simply "American", "British", or "International".
+or it can be simplified to simply "american", "british", or "international".
 
 The function identifies the format from knowledge of the order.
 
@@ -30,9 +30,9 @@ The user identifies which format order.  This code will issue a warning
 if an obvious issue occurs with the format.  If the dataset is large
 getting the format is critical as testing is limited to the first 1000 datapoints. 
   
-format = "American"      ... date order is (1) month (2) day (3) year
-format = "British"       ... date order is (1) day (2) month (3) year
-format = "International" ... date order is (1) year (2) month (3) day
+format = "american"      ... date order is (1) mm (2) day (3) year
+format = "british"       ... date order is (1) day (2) mm (3) year
+format = "international" ... date order is (1) year (2) mm (3) day
 
 The time of day may not be part of the character string included with the
 date.  If it is not then the timeIfSeparateFromDate paramter can include 
