@@ -7,6 +7,12 @@
 #' @param timeIntervalUnits the units of the time interval
 #' @keywords time
 #' @examples
+#' 
+#' library(EmissionsHelper)
+#' mytime <- reformatTime(c("2018-1-1 12:01", "2018-1-1 12:02",
+#'                        "2018-1-1 12:16", "2018-1-1 12:17")) 
+#' timeCeiling(mytime, 15, "minutes")                       
+#' 
 #'
 #' @export
 
