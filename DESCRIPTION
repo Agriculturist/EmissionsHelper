@@ -1,6 +1,6 @@
 Package: EmissionsHelper
 Title: Emissions Modeling Support Functions Package
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Jerry", "Martin", email = "jerry.h.martin@gmail.com", role = c("aut", "cre"))
 Description: This package is used to help with emissions modeling. This package includes easy to understand functions common in emissions modeling as well as functions to format date and time data. 
 Depends: R (>= 3.3.2)
@@ -8,4 +8,4 @@ License: GNU General Public License version 2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Imports: dplyr
+Imports: plyr
