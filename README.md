@@ -25,11 +25,22 @@ This library is intended to ease initial dataprocessing associated with emission
 ### renameAllDataframeColumns
 *renameAllDataframeColumns* is a self commenting approach to rename dataframe columns if a header does not import properly.  
 
+## timeCeiling and timeFloor
+*timeCeiling* and *timeFloor* are useful for doing averages over a certain time interval.
+
 ### reformatTime
 *reformatTime* infers formatting parameters from a character date.
 
 reformatTime("1/31/2012T00:00:00")
 
 reformatTime("2018-01-05 13:45:01")
+
+## calculateSonicTemperature
+*calculateSonicTemperature* calculates the sonic temperature from windspeed.
+
+## calculateCovariances3DAnemometer
+*calculateCovariances3DAnemometer* can be used to calculated the covariances from a 3d anemometer.
+
+
 
 
