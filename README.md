@@ -22,6 +22,9 @@ library(EmissionsHelper)
 
 This library is intended to ease initial dataprocessing associated with emissions modeling work.
 
+### renameAllDataframeColumns
+*renameAllDataframeColumns* is a self commenting approach to rename dataframe columns if a header does not import properly.  
+
 ### reformatTime
 *reformatTime* infers formatting parameters from a character date.
 
