@@ -156,7 +156,6 @@ testCharacterDate <- function(characterDate,
               paste0("^", DateRegEx,"(\\D)", HHMMSSorNoSSRegEx,
                      "$"), "\\1", characterDate[min(which(testVector == TRUE))])
             
-            sdfff <<- paste0("^", DateRegEx,"(\\D)", HHMMSSorNoSSRegEx, "$")
           }
         } 
       }
