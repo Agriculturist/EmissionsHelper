@@ -43,6 +43,7 @@ It can extract features about the date using regular expressions
 It can extract features about the date using regular expressions
 
 This function assumes the dateSeparator is "-", ".", or "/"
+
 format = "american"      ... date order is (1) mm (2) day (3) year
 format = "british"       ... date order is (1) day (2) mm (3) year
 format = "international" ... date order is (1) year (2) mm (3) day
@@ -72,6 +73,9 @@ format = "international" ... date order is (1) year (2) mm (3) day
 \examples{
  
  testCharacterDate("2018-01-05 13:45:01")
+ testCharacterDate("2018/04/30 15:07:41")
+ testCharacterDate("2018/04/30 15:07")
+ 
  
  # This date outputs an unknown format style because the
  # American and British styles can become confused.   

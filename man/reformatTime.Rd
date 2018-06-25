@@ -12,9 +12,9 @@ reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
 
 \item{timeIfSeparateFromDate}{the time of an event as a character array}
 
-\item{tz}{time zone to use}
+\item{dateFormat}{either ("american", "british", "international") or the strptime format parameter.}
 
-\item{dateformat}{either ("american", "british", "international") or the strptime format parameter.}
+\item{tz}{time zone to use}
 }
 \description{
 This function is a wrapper for the as.POSIXct function. This function is 
