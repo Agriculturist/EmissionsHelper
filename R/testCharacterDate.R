@@ -156,6 +156,9 @@ testCharacterDate <- function(characterDate,
     } else {
       out$yearFormat <- "Unknown"
     }
+  }else if(sum(c(out$fullYear, out$partialYear)) > 1){
+    warning("Format type unknown because multiple formats could be valid.")
+    out$yearFormat <- "Unknown"
   }else{
     out$yearFormat <- "Unknown"
   }
