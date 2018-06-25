@@ -26,7 +26,7 @@ This library is intended to ease initial dataprocessing associated with emission
 *renameAllDataframeColumns* is a self commenting approach to rename dataframe columns if a header does not import properly.  
 
 ### timeCeiling and timeFloor
-*timeCeiling* and *timeFloor* are useful for doing averages over a certain time interval.
+*timeCeiling* and *timeFloor* are useful for statistics over time intervals.
 
 ### reformatTime
 *reformatTime* infers formatting parameters from a character date.
