@@ -19,9 +19,9 @@
 #' Because the American and British styles can be confused it may be necissary
 #' to specify the format.
 #'
-#' dateformat = "american"      ... date order is (1) mm (2) day (3) year
-#' dateformat = "british"       ... date order is (1) day (2) mm (3) year
-#' dateformat = "international" ... date order is (1) year (2) mm (3) day
+#' dateformat = "American"      ... date order is (1) mm (2) day (3) year
+#' dateformat = "British"       ... date order is (1) day (2) mm (3) year
+#' dateformat = "International" ... date order is (1) year (2) mm (3) day
 #' 
 #' 
 #' The time of day may not be part of the character string included with the
@@ -38,7 +38,16 @@
 #' @keywords time
 #' @examples
 #'  
-#'    reformatTime()
+#'    reformatTime("1/31/2012T00:00:00")
+#'    
+#'    reformatTime("2018-01-05 13:45:01")
+#'    
+#'    # This will generate an error because it could be either 
+#'    #     American or British format
+#'    reformatTime("01-01-2010 12:00:00")
+#'    
+#'    reformatTime("01-01-2010 12:00:00", dateFormat = "American")
+#'    
 #' @export
 
 reformatTime <- function(dateToReformat, 
@@ -119,3 +128,4 @@ reformatTime <- function(dateToReformat,
                              format = modifiedFormat)))
   
 }
+
