@@ -6,7 +6,7 @@
 #' It can extract features about the date using regular expressions
 #' 
 #'  This function assumes the dateSeparator is "-", ".", or "/"
-  
+#'
 #' format = "american"      ... date order is (1) mm (2) day (3) year
 #' format = "british"       ... date order is (1) day (2) mm (3) year
 #' format = "international" ... date order is (1) year (2) mm (3) day
@@ -33,6 +33,9 @@
 #' @examples
 #'  
 #'  testCharacterDate("2018-01-05 13:45:01")
+#'  testCharacterDate("2018/04/30 15:07:41")
+#'  testCharacterDate("2018/04/30 15:07")
+#'  
 #'  
 #'  # This date outputs an unknown format style because the
 #'  # American and British styles can become confused.   
@@ -55,21 +58,22 @@ testCharacterDate <- function(characterDate,
               withoutTime = FALSE,
               formatStyle = NULL,
               yearFormat = NULL,
-              timePresent = NULL
+              timePresent = NULL,
+              secondsPresent = NULL
   )
   
   if(length(characterDate) < testUpperLimit){
     testUpperLimit <- length(characterDate)
   }
+  
   if (testUpperLimit < 1){testUpperLimit <- 1}
   if (testPercentPositive > 100){testPercentPositive <- 100}
   if (testPercentPositive < 0){testPercentPositive <- 0}
-  
-  
+
   # identify dateSeparators
   out$dateSeparator <- if(grepl("[/]", characterDate[1])){
     "/"
-  }else if(grepl("[/.]", characterDate[1])) {
+  }else if(grepl("[/.]", characterDate[1])){
     "."
   }else if(grepl("[-]", characterDate[1])){
     "-"
@@ -79,12 +83,14 @@ testCharacterDate <- function(characterDate,
   
   # Regular Expression Parts
   
-  sepRegEx <- "[\\/\\.\\-]"
-  ddRegEx <- "[0-3]?[0-9]"
-  mmRegEx <- "[0-1]?[0-9]"
-  yyRegEx <- "[0-9][0-9]"
-  YYRegEx <- "[0-2][0-9][0-9][0-9]"
-  HHMMSSRegEx <- "[0-2]?[0-9]:[0-6]?[0-9]:[0-6]?[0-9]"
+  sepRegEx           <- "[\\/\\.\\-]"
+  ddRegEx            <- "[0-3]?[0-9]"
+  mmRegEx            <- "[0-1]?[0-9]"
+  yyRegEx            <- "[0-9][0-9]"
+  YYRegEx            <- "[0-2][0-9][0-9][0-9]"
+  HHMMSSRegEx        <- "[0-2]?[0-9]:[0-6]?[0-9]:[0-6]?[0-9]"
+  HHMMRegEx          <- "[0-2]?[0-9]:[0-6]?[0-9]"
+  HHMMSSorNoSSRegEx  <- "[0-2]?[0-9]:[0-6]?[0-9]:?[0-6]?[0-9]?"
   
   # Regular Expression Order
   
@@ -96,47 +102,68 @@ testCharacterDate <- function(characterDate,
                            list(american = c(mmRegEx, ddRegEx, YYRegEx),
                                 british = c(ddRegEx, mmRegEx, YYRegEx),
                                 international = c(YYRegEx, mmRegEx, ddRegEx)))
-  
-  
+
   for(yearType in c("partialYear", "fullYear")){
     for(formatType in c("american", "british", "international")){
       
       DateRegEx <- paste0(dateTypesRegEx[[yearType]][[formatType]][1], sepRegEx, 
                           dateTypesRegEx[[yearType]][[formatType]][2], sepRegEx,
                           dateTypesRegEx[[yearType]][[formatType]][3])
-      
-
-      
-      testVector <- as.logical(sapply(characterDate[1:testUpperLimit], 
-                                      function(x){grepl(paste0("^", DateRegEx, "$"), x)})) 
-
-      if((sum(testVector) / length(testVector) * 100 > testPercentPositive)){
-        out[[yearType]] <- TRUE
-        out[[formatType]] <- TRUE
-        out$withoutTime <- TRUE
-      }
-      
-      DateRegEx <- paste0(DateRegEx, "(\\D)", HHMMSSRegEx)
-      
-
-      
-      testVector <- as.logical(sapply(characterDate[1:testUpperLimit], 
-                                      function(x){grepl(paste0("^", DateRegEx, "$"), x)})) 
      
-      if((sum(testVector) / length(testVector) * 100 > testPercentPositive)){
+      # test for no time
+      testVector <- as.logical(sapply(characterDate[1:testUpperLimit], 
+                                      function(x){grepl(paste0("^", DateRegEx, "$"), x)})) 
+      
+      if(sum(testVector) / length(testVector) * 100 > testPercentPositive){
+        out[[yearType]]    <- TRUE
+        out[[formatType]]  <- TRUE
+        out$withoutTime    <- TRUE
+        out$secondsPresent <- FALSE
         
-        out[[yearType]] <- TRUE
-        out[[formatType]] <- TRUE
-        out$withTime <- TRUE
-       
-        out$dateTimeSeparator <- gsub(DateRegEx, "\\1", 
-                                      characterDate[min(which(testVector == TRUE))])
+      } else {
         
-      }      
-    }
-  }                         
+        # test for time present with seconds
+        testVector <- as.logical(
+          sapply(characterDate[1:testUpperLimit], 
+                 function(x){grepl(
+                   paste0("^", DateRegEx, "(\\D)", HHMMSSRegEx, "$"), x)}))
+        
+        if(sum(testVector) / length(testVector) * 100 > testPercentPositive){
+          
+          out[[yearType]]   <- TRUE
+          out[[formatType]] <- TRUE
+          out$withTime      <- TRUE
+          out$secondsPresent <- TRUE
+          out$dateTimeSeparator <- gsub(
+            paste0("^", DateRegEx, "(\\D)", HHMMSSorNoSSRegEx, "$"), "\\1", 
+                   characterDate[min(which(testVector == TRUE))])
+            
+            
+        } else {
+          # test for time present with no seconds
+
+          testVector <- as.logical(
+            sapply(characterDate[1:testUpperLimit], 
+                   function(x){grepl(
+                     paste0("^", DateRegEx, "\\D", HHMMRegEx, "$"), x)})) 
+          
+          if(sum(testVector) / length(testVector) * 100 > testPercentPositive){
+            out[[yearType]]   <- TRUE
+            out[[formatType]] <- TRUE
+            out$withTime <- TRUE
+            out$secondsPresent <- FALSE
+            out$dateTimeSeparator <- gsub(
+              paste0("^", DateRegEx,"(\\D)", HHMMSSorNoSSRegEx,
+                     "$"), "\\1", characterDate[min(which(testVector == TRUE))])
+            
+            sdfff <<- paste0("^", DateRegEx,"(\\D)", HHMMSSorNoSSRegEx, "$")
+          }
+        } 
+      }
+    }      
+  }
   
-  
+
   if(sum(c(out$american, out$british, out$international)) == 1){
     if(out$american){
       out$formatStyle <- "American"
