@@ -20,8 +20,13 @@ library(EmissionsHelper)
 
 ## Functions
 
+This library is intended to ease initial dataprocessing associated with emissions modeling work.
+
+### reformatTime
 This package feautures a reformatTime function which infers formatting parameters from a character date.
 
 reformatTime("1/31/2012T00:00:00")
 
 reformatTime("2018-01-05 13:45:01")
+
+
