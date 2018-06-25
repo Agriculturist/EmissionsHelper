@@ -33,7 +33,7 @@
 #' 
 #' @param dateToReformat the date and or time an event occured
 #' @param timeIfSeparateFromDate the time of an event as a character array 
-#' @param dateformat either ("american", "british", "international") or the strptime format parameter. 
+#' @param dateFormat either ("american", "british", "international") or the strptime format parameter. 
 #' @param tz time zone to use
 #' @keywords time
 #' @examples
@@ -77,13 +77,16 @@ reformatTime <- function(dateToReformat,
     dateInfo      <- testCharacterDate (dateToReformat, ...)
     dateseparator <- dateInfo$dateSeparator
     dateTimeSeparator <- dateInfo$dateTimeSeparator
+    isFullYear    <- dateInfo$yearFormat == "Full"
+    isDateTime    <- dateInfo$timePresent
+    secondsPresent <- dateInfo$secondsPresent
+    
     if (length(dateFormat) == 0){
       formatStyle <- tolower(dateInfo$formatStyle)
     }else{
       formatStyle <- dateFormat
     }    
-    isFullYear    <- dateInfo$yearFormat == "Full"
-    isDateTime    <- dateInfo$timePresent
+
 
     
   }
@@ -106,7 +109,10 @@ reformatTime <- function(dateToReformat,
                            dateOrderPOSIXct[[whichFormat]][3])
     
     if(isDateTime){
-      returnFormat <-  paste0(returnFormat, dateTimeSeparator, "%H:%M:%S")
+      
+      
+      returnFormat <-  paste0(returnFormat, dateTimeSeparator, 
+                              if(secondsPresent){"%H:%M:%S"}else{"%H:%M"})
     } 
     
     return(returnFormat)
@@ -128,4 +134,3 @@ reformatTime <- function(dateToReformat,
                              format = modifiedFormat)))
   
 }
-
