@@ -27,7 +27,7 @@ timeCeiling <- function(timeValue, timeIntervalValue = 15, timeIntervalUnits = "
                                   "h" = 3600)
   
   
-  if(~is.null(timeValue)){
+  if(!is.null(timeValue)){
   return(
     as.POSIXct(
       floor(as.numeric(as.POSIXct(timeValue)) / 
