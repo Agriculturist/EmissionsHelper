@@ -7,6 +7,11 @@
 #' @param timeIntervalUnits the units of the time interval
 #' @keywords time
 #' @examples
+#' 
+#' library(EmissionsHelper)
+#' mytime <- reformatTime(c("2018-1-1 12:01", "2018-1-1 12:02",
+#'                        "2018-1-1 12:16", "2018-1-1 12:17")) 
+#' timeFloor(mytime, 15, "minutes") 
 #'
 #' @export
 
@@ -34,5 +39,6 @@ timeFloor <- function(timeValue, timeIntervalValue = 15, timeIntervalUnits = "mi
   }else{
     warning("Check parameters in timeFloor function ... timeValue is NULL")
   }
+  
   
 }
