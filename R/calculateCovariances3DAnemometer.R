@@ -33,19 +33,20 @@ calculateCovariances3DAnemometer <- function(windDataframe,
                                              
                                             ){
   
+  require(plyr)
   timeIntervalType <- tolower(timeIntervalType)
-  
+
   if (timeIntervalType == "ceiling"){
-    rawWindDataEddyPro$timeinterval <-  timeCeiling(rawWindDataEddyPro$TIMESTAMP, 
-                                                    timeIntervalValue, 
+    windDataframe$timeInterval <-  timeCeiling(windDataframe[[timeVariableName]],
+                                                    timeIntervalValue,
                                                     timeIntervalUnits)
   }else{
-    rawWindDataEddyPro$timeinterval <-  timeFloor(rawWindDataEddyPro$TIMESTAMP, 
-                                                    timeIntervalValue, 
-                                                    timeIntervalUnits)   
+    windDataframe$timeInterval <-  timeFloor(windDataframe[[timeVariableName]],
+                                                    timeIntervalValue,
+                                                    timeIntervalUnits)
   }
   
-  outputDataframe <- ddply(windDataframe, .variables = .(timeceiling), 
+  outputDataframe <- ddply(windDataframe, .variables = .(timeInterval), 
                            .fun = function(xx){return(
                              data.frame(
                                U = mean(xx[[UVariableName]]),
