@@ -47,6 +47,9 @@ calculateMeansOverTime <- function(dataframe,
                                                     timeIntervalUnits)
   }
   
+  # in case the input is a factor
+  dataframe[[valueColumnName]] <- as.numeric(dataframe[[valueColumnName]])
+  
   outputDataframe <- ddply(dataframe, .variables = .(timeInterval), 
                            .fun = function(xx){return(
                              data.frame(
