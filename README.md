@@ -1,7 +1,7 @@
 # EmissionsHelper
 An R package to assist with Emissions Modeling Work
 
-This is a collection of support functions for processing wind models.  The primary purpose of this package is to simplify data wrangling portion associated with wind models.  Wind models do not require the complexity of R. To mitigate the complexity, this package seeks to use intuative self-commenting functions for processing data.
+This is a collection of support functions for processing wind models.  The primary purpose of this package is to simplify data preparation which may be required with developing advanced wind models.  Wind models can benefit from many of the features R, the goal of this package is to aid in developing wind models by making data preparation more intuative.
 
 
 ## Installing EmissionsHelper
