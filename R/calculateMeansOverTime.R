@@ -19,7 +19,7 @@
 #' @param timeIntervalType is set to "ceiling" or "floor" depending on where to mark the samples
 #' @param timeIntervalValue the value which describes the length of the time segment  
 #' @param timeIntervalUnits the units for the length of the time segment
-#' @keywords 
+#' @keywords means time
 #' @examples
 #'  
 #'    calculateMeansOverTime()
