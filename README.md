@@ -39,8 +39,9 @@ reformatTime("2018-01-05 13:45:01")
 *calculateSonicTemperature* calculates the sonic temperature from windspeed.
 
 ### calculateCovariances3DAnemometer
-*calculateCovariances3DAnemometer* can be used to calculated the covariances from a 3d anemometer.
+*calculateCovariances3DAnemometer* calculates covariances from a 3D anemometer.
 
-
+### calculateMeansOverTime
+*calculateMeansOverTime* averages numbers over a certain time interval.
 
 
