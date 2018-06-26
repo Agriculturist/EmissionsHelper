@@ -64,6 +64,11 @@ reformatTime <- function(dateToReformat,
                 " is already in time format.  No reformatting done."))
   }
   
+  if (nrow(dateToReformat) == 0) {
+    stop(paste0(deparse(substitute(dateToReformat)), 
+                " has 0 rows.  No reformatting done."))
+  }
+  
   # guards to check input parameters
   dateToReformat <- as.character(dateToReformat)
   dateFormat <- tolower(as.character(dateFormat))
@@ -108,7 +113,7 @@ reformatTime <- function(dateToReformat,
                            dateOrderPOSIXct[[whichFormat]][2], dateseparator, 
                            dateOrderPOSIXct[[whichFormat]][3])
     
-    if(isDateTime){
+    if(isDateTime == TRUE){
       
       
       returnFormat <-  paste0(returnFormat, dateTimeSeparator, 
@@ -134,3 +139,6 @@ reformatTime <- function(dateToReformat,
                              format = modifiedFormat)))
   
 }
+
+
+
