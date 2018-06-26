@@ -67,7 +67,7 @@ reformatTime <- function(dateToReformat,
   
   # check 2: are there elements in the date (sequentially coupled)
   dateToReformat <- as.character(dateToReformat)  
-  if (nrow(dateToReformat) == 0) {
+  if (length(dateToReformat) == 0) {
     stop(paste0(deparse(substitute(dateToReformat)), 
                 " has 0 rows.  No reformatting done."))
   }
