@@ -57,8 +57,7 @@ calculateMeansOverTime <- function(dataframe,
                                stdDev = sd(xx[[valueColumnName]]),
                                count = length(xx[[valueColumnName]]),
                                max = max(xx[[valueColumnName]]),
-                               min = min(xx[[valueColumnName]]),
-                               mode = mode(xx[[valueColumnName]]) 
+                               min = min(xx[[valueColumnName]]) 
                              ))})
   
   
