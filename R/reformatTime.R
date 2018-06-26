@@ -57,20 +57,22 @@ reformatTime <- function(dateToReformat,
                          ...
                          ){
   
-  # check if input is already a date
-  if (is(dateToReformat, "POSIXct") && !is.factor(dateToReformat) && 
+  # check 1: Is input is already a date  (sequentially coupled!)
+  if (is(dateToReformat, "POSIXct") && 
+      !is.factor(dateToReformat) && 
       !is.character(dateToReformat)){
     stop(paste0(deparse(substitute(dateToReformat)), 
                 " is already in time format.  No reformatting done."))
   }
   
+  # check 2: are there elements in the date (sequentially coupled)
+  dateToReformat <- as.character(dateToReformat)  
   if (nrow(dateToReformat) == 0) {
     stop(paste0(deparse(substitute(dateToReformat)), 
                 " has 0 rows.  No reformatting done."))
   }
   
   # guards to check input parameters
-  dateToReformat <- as.character(dateToReformat)
   dateFormat <- tolower(as.character(dateFormat))
   
 
@@ -92,8 +94,6 @@ reformatTime <- function(dateToReformat,
       formatStyle <- dateFormat
     }    
 
-
-    
   }
     
   # assemble the format expression for the as.POSIXct function
@@ -139,6 +139,3 @@ reformatTime <- function(dateToReformat,
                              format = modifiedFormat)))
   
 }
-
-
-
