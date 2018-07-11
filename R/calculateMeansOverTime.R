@@ -10,7 +10,6 @@
 #'    count - count of each time segment
 #'    max - max of each time segment
 #'    min - min of each time segment
-#'    mode - mode of each time segment
 #'             
 #' 
 #' @param dataframe the data frame for wind data
