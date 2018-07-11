@@ -38,8 +38,13 @@ reformatTime("2018-01-05 13:45:01")
 ### calculateSonicTemperature
 *calculateSonicTemperature* calculates the sonic temperature from windspeed.
 
+### calculateMeanProducts3DAnemometer
+*calculateMeanProducts3DAnemometer* calculates the mean of products over time intervals for a 3D anemometer.
+
 ### calculateCovariances3DAnemometer
 *calculateCovariances3DAnemometer* calculates covariances from a 3D anemometer.
+
+
 
 ### calculateMeansOverTime
 *calculateMeansOverTime* averages numbers over a certain time interval.
