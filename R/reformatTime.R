@@ -34,6 +34,8 @@
 #' @param dateToReformat the date and or time an event occured
 #' @param timeIfSeparateFromDate the time of an event as a character array 
 #' @param dateFormat either ("american", "british", "international") or the strptime format parameter. 
+#' @param defaultStyle if an indeterminate date is found then the default style is used 
+#' (either american or british, international dates are usually not indeterminant because of the leading year)
 #' @param tz time zone to use
 #' @keywords time
 #' @examples
@@ -42,11 +44,13 @@
 #'    
 #'    reformatTime("2018-01-05 13:45:01")
 #'    
-#'    # This will generate an error because it could be either 
+#'    # This will generate a warning because it could be either 
 #'    #     American or British format
 #'    reformatTime("01-01-2010 12:00:00")
 #'    
 #'    reformatTime("01-01-2010 12:00:00", dateFormat = "American")
+#'    
+#'    reformatTime("4/30/2018 15:07", dateFormat = "American")
 #'    
 #' @export
 
@@ -54,88 +58,99 @@ reformatTime <- function(dateToReformat,
                          timeIfSeparateFromDate = NULL, 
                          dateFormat = NULL, 
                          tz = "Etc/GMT+6",
+                         defaultStyle = "american",
                          ...
-                         ){
+){
   
-  # check 1: Is input is already a date  (sequentially coupled!)
-  if (is(dateToReformat, "POSIXct") && 
-      !is.factor(dateToReformat) && 
-      !is.character(dateToReformat)){
-    stop(paste0(deparse(substitute(dateToReformat)), 
+  
+  dateInfo <- list(
+    value = dateToReformat,
+    isPOSIXct = is(dateToReformat, "POSIXct"),
+    isFactor = is.factor(dateToReformat),
+    isCharacter = is.character(dateToReformat),
+    charValue = as.character(dateToReformat),
+    isEmpty = length(dateToReformat) == 0,
+    paramValue = deparse(substitute(dateToReformat))
+  )
+  
+  # check 1: Is input is already a date?
+  if (dateInfo$isPOSIXct){
+    stop(paste0(dateInfo$paramValue, 
                 " is already in time format.  No reformatting done."))
   }
   
-  # check 2: are there elements in the date (sequentially coupled)
-  dateToReformat <- as.character(dateToReformat)  
-  if (length(dateToReformat) == 0) {
-    stop(paste0(deparse(substitute(dateToReformat)), 
-                " has 0 rows.  No reformatting done."))
-  }
+  # check 2: Are there elements in the date? 
+  if (dateInfo$isEmpty) {
+    stop(paste0(dateInfo$paramValue, " has 0 rows.  No reformatting done."))
+  }  
   
-  # guards to check input parameters
-  dateFormat <- tolower(as.character(dateFormat))
+  formatInfo <- list(
+    lower = tolower(as.character(dateFormat)),
+    STYLES = c("american", "british", "international"),
+    isEmpty = length(dateFormat) == 0
+  )
   
+  formatInfo$isUserStyle <- isTRUE(formatInfo$lower %in% formatInfo$STYLES)
 
-  if (length(dateFormat) == 0 ||  
-      isTRUE(tolower(dateFormat) %in% 
-             c("american", "british", "international"))){
-    
-    
-    dateInfo      <- testCharacterDate (dateToReformat, ...)
-    dateseparator <- dateInfo$dateSeparator
-    dateTimeSeparator <- dateInfo$dateTimeSeparator
-    isFullYear    <- dateInfo$yearFormat == "Full"
-    isDateTime    <- dateInfo$timePresent
-    secondsPresent <- dateInfo$secondsPresent
-    
-    if (length(dateFormat) == 0){
-      formatStyle <- tolower(dateInfo$formatStyle)
+  formatInfo$userInputStyle <- if(formatInfo$isUserStyle){
+    formatInfo$lower}else{"none"}
+
+  formatInfo$autoFormat = formatInfo$isUserStyle || formatInfo$isEmpty
+
+  if(formatInfo$autoFormat){
+    formatInfo$chardateInfo <- testCharacterDate(dateInfo$charValue) #, ...)
+    formatInfo$isFullYear <- formatInfo$chardateInfo$yearFormat == "Full"
+    formatInfo$isDateTime <- formatInfo$chardateInfo$timePresent
+    formatInfo$secondsPresent <- formatInfo$chardateInfo$secondsPresent
+    formatInfo$style <- if (formatInfo$isEmpty){
+      tolower(formatInfo$chardateInfo$formatStyle)
     }else{
-      formatStyle <- dateFormat
-    }    
-
+      formatInfo$userInputStyle
+    }
+    
+    if(!isTRUE(formatInfo$style %in% formatInfo$STYLES)){
+      warning("Time format style is indeterminate, setting default")
+      formatInfo$style <- defaultStyle
+    }
+    
+    formatInfo$dateSeparator <- formatInfo$chardateInfo$dateSeparator
+    formatInfo$dateTimeSeparator <- formatInfo$chardateInfo$dateTimeSeparator
   }
+
+  assembleFormat <- function(formatInformation){
     
-  # assemble the format expression for the as.POSIXct function
-  formatForPOSIXct <- function(whichFormat, isDateTime, isFullYear){
+    DATEORDER <- list(american = c("%m", "%d", "%y"),
+                      british = c("%d", "%m", "%y"),
+                      international = c("%y", "%m", "%d"))
     
-    dateOrderPOSIXct <- list(
-      american = c("%m", "%d", "%y"),
-      british = c("%d", "%m", "%y"),
-      international = c("%y", "%m", "%d")
-    )
+    if(formatInformation$isFullYear){
+      DATEORDER <- lapply(DATEORDER, function(x){c(gsub("y", "Y",x))})
+    }
     
-    if(isFullYear){
-      dateOrderPOSIXct <- lapply(dateOrderPOSIXct, 
-                                 function(x){c(gsub("y", "Y",x))})}
+    returnFormat <- paste0(DATEORDER[[formatInformation$style]][1], 
+                           formatInformation$dateSeparator,
+                           DATEORDER[[formatInformation$style]][2], 
+                           formatInformation$dateSeparator, 
+                           DATEORDER[[formatInformation$style]][3])
     
-    returnFormat <- paste0(dateOrderPOSIXct[[whichFormat]][1], dateseparator,
-                           dateOrderPOSIXct[[whichFormat]][2], dateseparator, 
-                           dateOrderPOSIXct[[whichFormat]][3])
-    
-    if(isDateTime == TRUE){
-      
-      
-      returnFormat <-  paste0(returnFormat, dateTimeSeparator, 
-                              if(secondsPresent){"%H:%M:%S"}else{"%H:%M"})
+    if(formatInformation$isDateTime){
+      returnFormat <- paste0(returnFormat, 
+                             formatInformation$dateTimeSeparator, 
+                             if(formatInformation$secondsPresent){
+                               "%H:%M:%S"
+                             }else{
+                               "%H:%M"
+                             })
     } 
-    
     return(returnFormat)
   }
   
-  
-  if (formatStyle != "unknown" && !is.null(dateFormat)){
-    modifiedFormat <- formatForPOSIXct(formatStyle, isDateTime, isFullYear)
+  if (formatInfo$autoFormat){
+    modifiedFormat <- assembleFormat(formatInfo)
   }else{
-    if (length(dateFormat) == 0){
-      stop(paste("Date format is indeterminant.",
-                    "Try setting the dateformat parameter."))
-    }else{
-      modifiedFormat <- dateFormat
-    }
+    modifiedFormat <- dateFormat
   }
-
-  return(as.POSIXct(strptime(as.character(dateToReformat), 
-                             format = modifiedFormat)))
   
+  return(as.POSIXct(strptime(dateInfo$charValue, 
+                             format = modifiedFormat)))
 }
