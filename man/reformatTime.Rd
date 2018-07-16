@@ -5,7 +5,7 @@
 \title{reformatTime}
 \usage{
 reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
-  dateFormat = NULL, tz = "Etc/GMT+6", ...)
+  dateFormat = NULL, tz = "Etc/GMT+6", defaultStyle = "american", ...)
 }
 \arguments{
 \item{dateToReformat}{the date and or time an event occured}
@@ -15,6 +15,9 @@ reformatTime(dateToReformat, timeIfSeparateFromDate = NULL,
 \item{dateFormat}{either ("american", "british", "international") or the strptime format parameter.}
 
 \item{tz}{time zone to use}
+
+\item{defaultStyle}{if an indeterminate date is found then the default style is used 
+(either american or british, international dates are usually not indeterminant because of the leading year)}
 }
 \description{
 This function is a wrapper for the as.POSIXct function. This function is 
@@ -54,11 +57,13 @@ POSIXct time format.
    
    reformatTime("2018-01-05 13:45:01")
    
-   # This will generate an error because it could be either 
+   # This will generate a warning because it could be either 
    #     American or British format
    reformatTime("01-01-2010 12:00:00")
    
    reformatTime("01-01-2010 12:00:00", dateFormat = "American")
+   
+   reformatTime("4/30/2018 15:07", dateFormat = "American")
    
 }
 \keyword{time}
